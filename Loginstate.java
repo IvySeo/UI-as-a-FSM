@@ -7,7 +7,7 @@ public class Loginstate extends WarehouseState{
   private static final int MANAGER_LOGIN = 2;
   private static final int EXIT = 3;
   private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));  
-  private WareHouseContext context;
+  private WarehouseContext context;
   private static Loginstate instance;
   private static Security secure;
   private Loginstate() {
@@ -58,19 +58,20 @@ public class Loginstate extends WarehouseState{
   }
 
   private void clerk(){
-    (WareHouseContext.instance()).setUser(WareHouseContext.IsClerk);
-    (WareHouseContext.instance()).changeState(0);
+    (WarehouseContext.instance()).setLogin(WarehouseContext.IsClerk);
+    (WarehouseContext.instance()).changeState(0);
   }
   private void manager(){
-	    (WareHouseContext.instance()).setUser(WareHouseContext.IsManager);
-	    (WareHouseContext.instance()).changeState(2);
+	    (WarehouseContext.instance()).setLogin(WarehouseContext.IsManager);
+	    (WarehouseContext.instance()).changeState(2);
 	  }
 
   private void user(){
     String userID = getToken("Please input the user id: ");
     if (secure.validateClerk(userID)){
-      (WareHouseContext.instance()).setUser(WareHouseContext.IsUser);
-      (WareHouseContext.instance()).changeState(1);
+      (WarehouseContext.instance()).setLogin(WarehouseContext.IsClient);
+      (WarehouseContext.instance()).setUser(userID);
+      (WarehouseContext.instance()).changeState(1);
     }
     else 
       System.out.println("Invalid user id.");
@@ -98,7 +99,7 @@ public class Loginstate extends WarehouseState{
                         "input 2 to login as manager\n"+
                         "input 3 to exit the system\n"); 
     }
-    (WareHouseContext.instance()).changeState(3);
+    (WarehouseContext.instance()).changeState(3);
   }
 
   public void run() {

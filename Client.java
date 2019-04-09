@@ -78,6 +78,11 @@ public class Client implements Serializable {
     return this.id.equals(id);
   }
   
+  public Iterator getOrders()
+  {
+	  return invoice.getOrders();
+  }
+  
   public String toString() {
     String string = "CID: " + id + " | Client: " + name + " | Address: " + address + " | Phone: " + phone + " | Balance Due: $" + balance;
     return string;

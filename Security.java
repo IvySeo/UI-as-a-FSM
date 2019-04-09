@@ -4,10 +4,18 @@ import java.text.*;
 import java.io.*;
 public class Security implements Serializable{
 	
-	public boolean validateClerk(String userName){
-		if (WareHouse.instance().searchMembership(userID) != null){
+	private Warehouse warehouse;
+	
+	public boolean validateClerk(String userID)
+	{
+		if (warehouse.instance().searchClient(userID) != null)
+		{
 			return true;
-		}else
+		}
+		else
 			return false;
+		
+	
+	}
 }
 

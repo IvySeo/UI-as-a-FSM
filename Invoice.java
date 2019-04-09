@@ -17,6 +17,11 @@ public class Invoice implements Serializable{
         orders.add(o);
     }
     
+    public Iterator getOrders() {
+    	return orders.iterator();
+    	
+    }
+    
     public Client getClient(){
         return client;
     }
