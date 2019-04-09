@@ -12,8 +12,6 @@ public class ClientState extends WarehouseState {
   private static final int VIEW_ACCOUNT = 1;
   private static final int PLACE_ORDER = 2;
   private static final int CHECK_PRICE_OF_PRODUCTS = 3;
-  private static final int SALESCLERK_MENU = 4;
-  private static final int MANAGER_MENU = 6;
   private static final int HELP = 13;
   private ClientState() {
       super();
@@ -92,8 +90,6 @@ public class ClientState extends WarehouseState {
     System.out.println(VIEW_ACCOUNT + " to view your client account");
     System.out.println(PLACE_ORDER + " to place an order");
     System.out.println(CHECK_PRICE_OF_PRODUCTS + " check the price of product(s)");
-    System.out.println(SALESCLERK_MENU + " to switch to salesclerk menu");
-    System.out.println(MANAGER_MENU + " to switch to manager menu");
     System.out.println(HELP + " for help");
   }
 
@@ -191,7 +187,7 @@ public class ClientState extends WarehouseState {
   public void logout()
   {
 
-    if (WarehouseContext.instance().getLogin() == WarehouseContext.IsSalesClerk)
+    if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClerk)
     {  //stem.out.println(" going to login \n");
     	(WarehouseContext.instance()).changeState(2); // exit with a code 2
     }
@@ -222,10 +218,6 @@ public class ClientState extends WarehouseState {
                                 break;
         case CHECK_PRICE_OF_PRODUCTS: 
         						checkProductPrice();
-                                break;
-        case SALESCLERK_MENU:   salesclerkmenu();
-                                break;
-        case MANAGER_MENU:      managermenu();
                                 break;
         case HELP:              help();
                                 break;
