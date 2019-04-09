@@ -10,11 +10,11 @@ public class WarehouseContext {
   private String userID;
   private BufferedReader reader = new BufferedReader(new 
                                       InputStreamReader(System.in));
-  public static final int IsClient = 0;
-  public static final int IsSalesClerk = 1;
-  public static final int IsManager = 2;
-  /*private LibState[] states;
-  private int[][] nextState;*/
+  public static final int IsClient = 1;
+  public static final int IsClerk = 2;
+  public static final int IsManager = 3;
+  private WarehouseState[] states;
+  private int[][] nextState;
 
   public String getToken(String prompt) {
     do {
@@ -53,40 +53,59 @@ public class WarehouseContext {
       cnfe.printStackTrace();
     }
   }
-
-  //public void setLogin(int code)
-  //{currentUser = code;}
   
-  public void changeState(int exitCode) {
-    if (exitCode == 0 )
-        System.out.println(" Return to Login state" );
+  private WarehouseContext() 
+  { //constructor
+	System.out.println("In WarehouseContext constructor");
+	
+    if (yesOrNo("Look for saved data and  use it?")) 
+    {
+      retrieve();
+    } 
+    else
+    {
+      warehouse = Warehouse.instance();
+    }
+    // set up the FSM and transition table;
+    states = new WarehouseState[4];
+    states[0] = Loginstate.instance();
+    states[1] = ClientState.instance(); 
+    states[2]=  ClerkState.instance();
+    states[3]=  Managerstate.instance();
+    nextState = new int[4][4];
+    nextState[0][0] = -1; nextState[0][1] = 1; nextState[0][2] = 2; nextState[0][3] = 3;
+    nextState[1][0] = 0; nextState[1][1] = -2; nextState[1][2] = 2; nextState[1][3] = -2;
+    nextState[2][0] = 0; nextState[2][1] = 1; nextState[2][2] = -2; nextState[2][3] = 3;
+    nextState[3][0] = 0; nextState[3][1] = -2; nextState[3][2] = 2; nextState[3][3] = -2;
     
-    if (exitCode == 1 )
-        System.out.println(" Switch to menu for SalesClerk" );
-    
-  }
-    
-  public void setUser(String uID) {
-   userID = uID; //System.out.println(userID);
+    currentState = 0;
   }
 
-  //public int getLogin()
-  //{ return currentUser;}
+  public void changeState(int transition)
+  {
+    //System.out.println("current state " + currentState + " \n \n ");
+    currentState = nextState[currentState][transition];
+    if (currentState == -2) 
+      {System.out.println("Error has occurred"); terminate();}
+    if (currentState == -1) 
+      terminate();
+    //System.out.println("current state " + currentState + " \n \n ");
+    states[currentState].run();
+  }
+
+  public void setLogin(int code)
+  {currentUser = code;}
+  
+  public void setUser(String uID) {
+   userID = uID; System.out.println(userID);
+  }
+
+  public int getLogin()
+  { return currentUser;}
 
   public String getUser()
   { return userID;}
 
-  private WarehouseContext() { //constructor
-    System.out.println("In WarehouseContext constructor");
-    if (yesOrNo("Look for saved data and  use it?")) {
-      retrieve();
-    } else {
-      warehouse = Warehouse.instance();
-    }
-     
-  }
-
-   
   public static WarehouseContext instance() {
     if (context == null) {
        System.out.println("calling constructor");
@@ -95,13 +114,27 @@ public class WarehouseContext {
     return context;
   }
 
-  /*public void process(){
+  public void process(){
+	System.out.println("PROCESSING: Running Current State = " + currentState);
     states[currentState].run();
-  }*/
+  }
   
-  /*public static void main (String[] args){
+  public static void main (String[] args){
+	  
     WarehouseContext.instance().process(); 
-  }*/
+  }
+  
+  private void terminate()
+  {
+   if (yesOrNo("Save data?")) {
+      if (Warehouse.save()) {
+         System.out.println(" The warehouse has been successfully saved in the file WarehouseData \n");
+       } else {
+         System.out.println(" There has been an error in saving \n" );
+       }
+     }
+   System.out.println(" Goodbye \n "); System.exit(0);
+  }
 
 
 }
