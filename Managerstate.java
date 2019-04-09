@@ -15,13 +15,8 @@ public class Managerstate extends WarehouseState {
   private static final int MODIFY_PRICE = 1;
   private static final int ASSIGN_PRODUCT = 2; 
   private static final int ADD_MANUFACTURER = 3;
-  private static final int LOAD_DATA = 4;
-  private static final int CLERKMENU = 5;
-  private static final int HELP = 6;
-  
-  private boolean running;
-  private int exitCode;
-  
+  private static final int CLERKMENU = 4;
+  private static final int HELP = 5;
   private Managerstate() {
       super();
       warehouse = Warehouse.instance();
@@ -65,7 +60,7 @@ public class Managerstate extends WarehouseState {
         Integer num = Integer.valueOf(item);
         return num.intValue();
       } catch (NumberFormatException nfe) {
-        System.out.println("Please input a number ");
+        System.out.println("Enter the number: ");
       }
     } while (true);
   }
@@ -81,7 +76,7 @@ public class Managerstate extends WarehouseState {
             }
             catch (NumberFormatException nfe)
             {
-                System.out.println("Please input a number ");
+                System.out.println("Enter the number: ");
             }
       } while (true);
   }
@@ -95,47 +90,35 @@ public class Managerstate extends WarehouseState {
         date.setTime(df.parse(item));
         return date;
       } catch (Exception fe) {
-        System.out.println("Please input a date as mm/dd/yy");
+        System.out.println("Enter the date (mm/dd/yy format) ");
       }
     } while (true);
   }
   public int getCommand() {
     do {
       try {
-        int value = Integer.parseInt(getToken("Enter command:" + HELP + " for help"));
+        int value = Integer.parseInt(getToken("Enter command:" + HELP ));
         if (value >= EXIT && value <= HELP) {
           return value;
         }
       } catch (NumberFormatException nfe) {
-        System.out.println("Enter a number");
+        System.out.println("Enter the number: ");
       }
     } while (true);
   }
 
-
-  //The manager operations:  Modify the sale price of an item, add a maufacturer, 
-  //connect a product to a manufacturer.  All manager operations need a password for con rmation.
-
-
-  //modifyprice()
-  //addManufacturer()
-  //Assign product for manufacturer
-
-
   public void help() {
-    System.out.println("Enter a number between 0 and 6 as explained below:");
+    System.out.println("Enter a number between 0 and 5 as explained below:");
     System.out.println(EXIT + " to Exit\n");
     System.out.println(MODIFY_PRICE + " to modify price");
     System.out.println(ASSIGN_PRODUCT+ " to assign product to manufacturer");
     System.out.println(ADD_MANUFACTURER+ " to add manufacturer");
-    System.out.println(LOAD_DATA + " to load warehouse data");
     System.out.println(CLERKMENU + " to  switch to the clerk menu");
     System.out.println(HELP + " for help");
   }
 
   public void clerkmenu() {
-    exitCode = 1;
-    running = false;
+    (WarehouseContext.instance()).changeState(0);
   }
 
    public void assignProduct()
@@ -177,15 +160,15 @@ public void modifyPrice(){
 
 public void addManufacturer()
     {
-        String name = getToken("Enter manufacturer name");
-        String address = getToken("Enter address");
-        String phone = getToken("Enter phone");
+        String name = getToken("Enter manufacturer: ");
+        String address = getToken("Enter address: ");
+        String phone = getToken("Enter phone number: ");
         Manufacturer result;
         result = warehouse.addManufacturer(name, address, phone);
 
         if(result == null)
         {
-            System.out.println("Could not add manufacturer");
+            System.out.println("Error");
         }
 
         System.out.println(result);
@@ -194,14 +177,10 @@ public void addManufacturer()
   
 
   public void logout() {
-      running = false;
-      exitCode = 0;
+    (WarehouseContext.instance()).changeState(2); 
   }
 
 
-  public void terminate(){
-        (WarehouseContext.instance()).changeState(exitCode);
-  }
 
   public void process() {
     int command;
@@ -220,7 +199,7 @@ public void addManufacturer()
                                             break;
       }
     }
-    terminate();
+    logout();
   }
 
 
