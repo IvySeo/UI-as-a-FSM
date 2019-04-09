@@ -59,11 +59,11 @@ public class Loginstate extends WarehouseState{
 
   private void clerk(){
     (WarehouseContext.instance()).setLogin(WarehouseContext.IsClerk);
-    (WarehouseContext.instance()).changeState(0);
+    (WarehouseContext.instance()).changeState(2);
   }
   private void manager(){
 	    (WarehouseContext.instance()).setLogin(WarehouseContext.IsManager);
-	    (WarehouseContext.instance()).changeState(2);
+	    (WarehouseContext.instance()).changeState(3);
 	  }
 
   private void user(){
@@ -80,8 +80,9 @@ public class Loginstate extends WarehouseState{
   public void process() {
     int command;
     System.out.println("Please input 0 to login as Clerk\n"+ 
-                        "input 1 to login as user\n" +
-                        "input 2 to exit the system\n");     
+            "input 1 to login as user\n" +
+            "input 2 to login as manager\n"+
+            "input 3 to exit the system\n");  
     while ((command = getCommand()) != EXIT) {
 
       switch (command) {
@@ -94,12 +95,9 @@ public class Loginstate extends WarehouseState{
         default:                System.out.println("Invalid choice");
                                 
       }
-      System.out.println("Please input 0 to login as Clerk\n"+ 
-                        "input 1 to login as user\n" +
-                        "input 2 to login as manager\n"+
-                        "input 3 to exit the system\n"); 
+
     }
-    (WarehouseContext.instance()).changeState(3);
+    (WarehouseContext.instance()).changeState(0);
   }
 
   public void run() {

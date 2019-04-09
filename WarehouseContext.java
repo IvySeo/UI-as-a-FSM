@@ -115,7 +115,7 @@ public class WarehouseContext {
   }
 
   public void process(){
-	System.out.println("PROCESSING: Running Current State = " + currentState);
+	//System.out.println("PROCESSING: Running Current State = " + currentState);
     states[currentState].run();
   }
   

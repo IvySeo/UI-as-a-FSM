@@ -221,7 +221,7 @@ public class ClerkState extends WarehouseState
         
         if(Warehouse.instance().searchClient(clientId) != null){
             (WarehouseContext.instance()).setUser(clientId);
-            //(WarehouseContext.instance()).changeState(1);
+            (WarehouseContext.instance()).changeState(1);
             
         }else{
             System.out.println("Invalid user id");
@@ -238,7 +238,7 @@ public class ClerkState extends WarehouseState
         }else if((WarehouseContext.instance()).getLogin() == WarehouseContext.IsManager)
         {
             //Logout to ManagerState
-            (WarehouseContext.instance()).changeState(2);
+            (WarehouseContext.instance()).changeState(3);
         }
         else
         {

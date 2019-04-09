@@ -134,8 +134,7 @@ public class Managerstate extends WarehouseState {
   }
 
   public void clerkmenu() {
-    exitCode = 1;
-    running = false;
+	 (WarehouseContext.instance()).changeState(2); 
   }
 
    public void assignProduct()
@@ -194,8 +193,7 @@ public void addManufacturer()
   
 
   public void logout() {
-      running = false;
-      exitCode = 0;
+	  (WarehouseContext.instance()).changeState(0); 
   }
 
 

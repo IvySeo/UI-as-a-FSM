@@ -86,7 +86,7 @@ public class ClientState extends WarehouseState {
 
   public void help() {
     System.out.println("Enter a number as explained below:");
-    System.out.println(EXIT + " to Exit\n");
+    System.out.println(EXIT + " to Log out\n");
     System.out.println(VIEW_ACCOUNT + " to view your client account");
     System.out.println(PLACE_ORDER + " to place an order");
     System.out.println(CHECK_PRICE_OF_PRODUCTS + " check the price of product(s)");
@@ -187,7 +187,7 @@ public class ClientState extends WarehouseState {
   public void logout()
   {
 
-    if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClerk)
+    if ((WarehouseContext.instance().getLogin() == WarehouseContext.IsClerk) || (WarehouseContext.instance().getLogin() == WarehouseContext.IsManager)) 
     {  //stem.out.println(" going to login \n");
     	(WarehouseContext.instance()).changeState(2); // exit with a code 2
     }
