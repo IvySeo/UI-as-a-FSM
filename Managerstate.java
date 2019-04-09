@@ -108,7 +108,7 @@ public class Managerstate extends WarehouseState {
   }
 
   public void help() {
-    System.out.println("Enter a number between 0 and 5 as explained below:");
+    System.out.println("Enter the number to select the menu.\n");
     System.out.println(EXIT + " to Exit\n");
     System.out.println(MODIFY_PRICE + " to modify price");
     System.out.println(ASSIGN_PRODUCT+ " to assign product to manufacturer");
@@ -124,18 +124,17 @@ public class Managerstate extends WarehouseState {
    public void assignProduct()
    {
         boolean result;
-        System.out.println("Assigning Product To Manufacturer");
-        System.out.println("=========================");
-        String pid = getToken("Enter Product Id (Example P1):");
-        String mid = getToken("Enter Manufacturer Id (Example M1):");
+        System.out.println("Assigning the Product To Manufacturer\n");
+        String pid = getToken("Enter Product Id :");
+        String mid = getToken("Enter Manufacturer Id :");
         result = warehouse.assignProductToManufacturer(pid, mid);
 
         if(result == true){
-            System.out.println("SUCCESS: Assigned product to manufacturer ");
+            System.out.println("Assigned the product.");
         }
         else
         {
-            System.out.println("FAILED to assign product");
+            System.out.println("Error");
         }
    }
 
