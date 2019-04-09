@@ -9,7 +9,7 @@ public class Loginstate extends WarehouseState{
   private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));  
   private WarehouseContext context;
   private static Loginstate instance;
-  private static Security secure;
+  private static Security secure = new Security();
   private Loginstate() {
       super();
   }

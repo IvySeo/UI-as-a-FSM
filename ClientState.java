@@ -16,7 +16,7 @@ public class ClientState extends WarehouseState {
   private ClientState() {
       super();
       warehouse = Warehouse.instance();
-      context = WarehouseContext.instance();
+      //context = WarehouseContext.instance();
   }
   
   public static ClientState instance() {
@@ -96,7 +96,7 @@ public class ClientState extends WarehouseState {
 
   public void viewAccount() {
 	  
-	String cid = context.getUser(); 
+	String cid = WarehouseContext.instance().getUser(); 
     
     Client client = warehouse.searchClient(cid);
     
@@ -147,7 +147,7 @@ public class ClientState extends WarehouseState {
   }
   
   public void placeOrder() {
-	  String cid = context.getUser(); 
+	  String cid = WarehouseContext.instance().getUser(); 
       
       Client client = warehouse.searchClient(cid);
       
@@ -181,7 +181,7 @@ public class ClientState extends WarehouseState {
   
   public void setUID_tester(String uID)
   {
-	  context.setUser(uID);  
+	  WarehouseContext.instance().setUser(uID);  
   }
 
   public void logout()
@@ -201,7 +201,7 @@ public class ClientState extends WarehouseState {
  
   public void terminate()
   {
-    context.changeState(exitCode);
+    WarehouseContext.instance().changeState(exitCode);
   }
   
   public void process() {

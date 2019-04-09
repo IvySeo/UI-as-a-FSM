@@ -58,7 +58,7 @@ public class WarehouseContext {
   { //constructor
 	System.out.println("In WarehouseContext constructor");
 	
-    if (yesOrNo("Look for saved data and  use it?")) 
+    if (yesOrNo("Look for saved data and use it?")) 
     {
       retrieve();
     } 

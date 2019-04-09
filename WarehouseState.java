@@ -4,7 +4,7 @@ public abstract class WarehouseState
     
     protected WarehouseState()
     {
-        context = WarehouseContext.instance();
+       // context = WarehouseContext.instance();
     }
     
     public abstract void run();

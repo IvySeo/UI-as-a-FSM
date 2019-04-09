@@ -26,6 +26,7 @@ public class ClerkState extends WarehouseState
     {
         super();
         warehouse = Warehouse.instance();
+        //context = WarehouseContext.instance();
     }
     
     public static ClerkState instance(){
