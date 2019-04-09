@@ -11,7 +11,7 @@ public class WarehouseContext {
   private BufferedReader reader = new BufferedReader(new 
                                       InputStreamReader(System.in));
   public static final int IsClient = 1;
-  public static final int IsSalesClerk = 2;
+  public static final int IsClerk = 2;
   public static final int IsManager = 3;
   private WarehouseState[] states;
   private int[][] nextState;
@@ -70,7 +70,7 @@ public class WarehouseContext {
     states = new WarehouseState[4];
     states[0] = LoginState.instance();
     states[1] = ClientState.instance(); 
-    states[2]=  SalesclerkState.instance();
+    states[2]=  ClerkState.instance();
     states[2]=  ManagerState.instance();
     nextState = new int[4][4];
     nextState[0][0] = -1; nextState[0][1] = 1; nextState[0][2] = 2; nextState[0][3] = 3;
