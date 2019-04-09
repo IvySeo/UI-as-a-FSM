@@ -131,7 +131,7 @@ public class Managerstate extends WarehouseState {
    {
         boolean result;
         System.out.println("Assigning the Product To Manufacturer\n");
-        String pid = getToken("Enter Product Id (Example P1):");
+        String pid = getToken("Enter Product Id:");
         String mid = getToken("Enter Manufacturer Id: ");
         result = warehouse.assignProductToManufacturer(pid, mid);
 
@@ -165,7 +165,7 @@ public void modifyPrice(){
 
 public void addManufacturer()
     {
-        String name = getToken("Enter manufacturer name": );
+        String name = getToken("Enter manufacturer name: " );
         String address = getToken("Enter address: ");
         String phone = getToken("Enter phone number: ");
         Manufacturer result;
