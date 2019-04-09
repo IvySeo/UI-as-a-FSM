@@ -26,7 +26,6 @@ public class ClerkState extends WarehouseState
     {
         super();
         warehouse = Warehouse.instance();
-        //context = WarehouseContext.instance();
     }
     
     public static ClerkState instance(){
@@ -102,6 +101,8 @@ public class ClerkState extends WarehouseState
     
     public void help(){
         System.out.println();
+        System.out.println("ClerkState Menu");
+        System.out.println("==============================");
         System.out.println("Enter a number between 0 and 12 as explained below");
         System.out.println(EXIT + " to Exit");
         System.out.println(ADD_CLIENT + " to add a client");
@@ -243,7 +244,7 @@ public class ClerkState extends WarehouseState
         else
         {
             //Error message
-            (WarehouseContext.instance()).changeState(1);
+            (WarehouseContext.instance()).changeState(2);
         }
     }
     

@@ -15,9 +15,8 @@ public class Managerstate extends WarehouseState {
   private static final int MODIFY_PRICE = 1;
   private static final int ASSIGN_PRODUCT = 2; 
   private static final int ADD_MANUFACTURER = 3;
-  private static final int LOAD_DATA = 4;
-  private static final int CLERKMENU = 5;
-  private static final int HELP = 6;
+  private static final int CLERKMENU = 4;
+  private static final int HELP = 5;
   
   private boolean running;
   private int exitCode;
@@ -51,7 +50,7 @@ public class Managerstate extends WarehouseState {
   }
   
   private boolean yesOrNo(String prompt) {
-    String more = getToken(prompt + " (Y|y)[es] or anything else for no");
+    String more = getToken(prompt + "Enter Y or y for yes");
     if (more.charAt(0) != 'y' && more.charAt(0) != 'Y') {
       return false;
     }
@@ -65,7 +64,7 @@ public class Managerstate extends WarehouseState {
         Integer num = Integer.valueOf(item);
         return num.intValue();
       } catch (NumberFormatException nfe) {
-        System.out.println("Please input a number ");
+        System.out.println("Enter the number: ");
       }
     } while (true);
   }
@@ -81,7 +80,7 @@ public class Managerstate extends WarehouseState {
             }
             catch (NumberFormatException nfe)
             {
-                System.out.println("Please input a number ");
+                System.out.println("Enter the number: ");
             }
       } while (true);
   }
@@ -95,14 +94,14 @@ public class Managerstate extends WarehouseState {
         date.setTime(df.parse(item));
         return date;
       } catch (Exception fe) {
-        System.out.println("Please input a date as mm/dd/yy");
+        System.out.println("Enter the date (mm/dd/yy format)");
       }
     } while (true);
   }
   public int getCommand() {
     do {
       try {
-        int value = Integer.parseInt(getToken("Enter command:" + HELP + " for help"));
+        int value = Integer.parseInt(getToken("Enter command:" + HELP ));
         if (value >= EXIT && value <= HELP) {
           return value;
         }
@@ -113,45 +112,35 @@ public class Managerstate extends WarehouseState {
   }
 
 
-  //The manager operations:  Modify the sale price of an item, add a maufacturer, 
-  //connect a product to a manufacturer.  All manager operations need a password for con rmation.
-
-
-  //modifyprice()
-  //addManufacturer()
-  //Assign product for manufacturer
-
-
   public void help() {
-    System.out.println("Enter a number between 0 and 6 as explained below:");
-    System.out.println(EXIT + " to Exit\n");
-    System.out.println(MODIFY_PRICE + " to modify price");
+    System.out.println();
+    System.out.println("ManagerState Menu");
+    System.out.println("==============================");
+    System.out.println("Enter the number to select the menu. (type 0 - 5)");
+    System.out.println(EXIT + " to exit");
+    System.out.println(MODIFY_PRICE + " to modify the price");
     System.out.println(ASSIGN_PRODUCT+ " to assign product to manufacturer");
     System.out.println(ADD_MANUFACTURER+ " to add manufacturer");
-    System.out.println(LOAD_DATA + " to load warehouse data");
-    System.out.println(CLERKMENU + " to  switch to the clerk menu");
+    System.out.println(CLERKMENU + " to switch to the clerk menu");
     System.out.println(HELP + " for help");
   }
 
-  public void clerkmenu() {
-	 (WarehouseContext.instance()).changeState(2); 
-  }
+  
 
    public void assignProduct()
    {
         boolean result;
-        System.out.println("Assigning Product To Manufacturer");
-        System.out.println("=========================");
+        System.out.println("Assigning the Product To Manufacturer\n");
         String pid = getToken("Enter Product Id (Example P1):");
-        String mid = getToken("Enter Manufacturer Id (Example M1):");
+        String mid = getToken("Enter Manufacturer Id: ");
         result = warehouse.assignProductToManufacturer(pid, mid);
 
         if(result == true){
-            System.out.println("SUCCESS: Assigned product to manufacturer ");
+            System.out.println("Yay! Assigned product to manufacturer! ");
         }
         else
         {
-            System.out.println("FAILED to assign product");
+            System.out.println("Failed. Could not process.");
         }
    }
 
@@ -159,41 +148,52 @@ public void modifyPrice(){
   String pid = getToken("Enter product ID: ");
   Product product = warehouse.searchProduct(pid);
   if(product == null){
-      System.out.println("Product does not exists");
+      System.out.println("Product does not exists.");
       return;
   }
   
   double price = getFloat("Enter the new price: ");
   
   if(warehouse.modifyPrice(pid, price) == false){
-      System.out.println("Could not update price");
+      System.out.println("Failed.");
   }
   else
   {
-      System.out.println("Updated the new price.");
+      System.out.println("Yay! Updated the new price.");
   }
 }
 
-public void addManufacturer()
+    public void addManufacturer()
     {
-        String name = getToken("Enter manufacturer name");
-        String address = getToken("Enter address");
-        String phone = getToken("Enter phone");
+        String name = getToken("Enter manufacturer name: " );
+        String address = getToken("Enter address: ");
+        String phone = getToken("Enter phone number: ");
         Manufacturer result;
         result = warehouse.addManufacturer(name, address, phone);
 
         if(result == null)
         {
-            System.out.println("Could not add manufacturer");
+            System.out.println("Failed to add.");
         }
 
         System.out.println(result);
     }
 
+  public void clerkmenu() {
+    //Login in to Clerk State
+    (WarehouseContext.instance()).changeState(2);
+    
+    //exitCode = 1;
+    //running = false;
+  }
   
 
   public void logout() {
-	  (WarehouseContext.instance()).changeState(0); 
+      //Logout to Login State
+      (WarehouseContext.instance()).changeState(0);
+      
+      //running = false;
+      //exitCode = 0;
   }
 
 
@@ -218,11 +218,12 @@ public void addManufacturer()
                                             break;
       }
     }
-    terminate();
+    logout();
   }
 
 
   public void run() {
-    process();
+      //running = true;
+      process();
   }
 }
