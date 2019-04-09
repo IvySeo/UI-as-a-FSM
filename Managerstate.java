@@ -98,10 +98,11 @@ public class Managerstate extends WarehouseState {
       }
     } while (true);
   }
+  
   public int getCommand() {
     do {
       try {
-        int value = Integer.parseInt(getToken("Enter command:" + HELP ));
+        int value = Integer.parseInt(getToken("Enter command: " + HELP + " for help" ));
         if (value >= EXIT && value <= HELP) {
           return value;
         }

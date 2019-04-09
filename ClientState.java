@@ -40,6 +40,7 @@ public class ClientState extends WarehouseState {
       }
     } while (true);
   }
+  
   private boolean yesOrNo(String prompt) {
     String more = getToken(prompt + " (Y|y)[es] or anything else for no");
     if (more.charAt(0) != 'y' && more.charAt(0) != 'Y') {
@@ -47,6 +48,7 @@ public class ClientState extends WarehouseState {
     }
     return true;
   }
+  
   public int getNumber(String prompt) {
     do {
       try {
@@ -58,6 +60,7 @@ public class ClientState extends WarehouseState {
       }
     } while (true);
   }
+  
   public Calendar getDate(String prompt) {
     do {
       try {
@@ -71,6 +74,7 @@ public class ClientState extends WarehouseState {
       }
     } while (true);
   }
+  
   public int getCommand() {
     do {
       try {
@@ -85,8 +89,11 @@ public class ClientState extends WarehouseState {
   }
 
   public void help() {
+    System.out.println();
+    System.out.println("ClientState Menu");
+    System.out.println("==============================");
     System.out.println("Enter a number as explained below:");
-    System.out.println(EXIT + " to Log out\n");
+    System.out.println(EXIT + " to Exit");
     System.out.println(VIEW_ACCOUNT + " to view your client account");
     System.out.println(PLACE_ORDER + " to place an order");
     System.out.println(CHECK_PRICE_OF_PRODUCTS + " check the price of product(s)");
@@ -95,24 +102,24 @@ public class ClientState extends WarehouseState {
 
 
   public void viewAccount() {
-	  
-	String cid = WarehouseContext.instance().getUser(); 
+      
+    String cid = context.getUser(); 
     
     Client client = warehouse.searchClient(cid);
     
     if(client != null)
     {
-    	
-		System.out.println("==================================");
-    	System.out.println("Viewing Client " + client.toString());
-    	System.out.println("==================================");
+        
+        System.out.println("==================================");
+        System.out.println("Viewing Client " + client.toString());
+        System.out.println("==================================");
 
         
         Iterator allOrders = warehouse.getWaitListedOrdersForClient(cid);
         
         if(allOrders != null)
         {
-        	System.out.println("==================================");
+            System.out.println("==================================");
             System.out.println("| Waitlisted Orders:");
             System.out.println("==================================");
             
@@ -147,7 +154,7 @@ public class ClientState extends WarehouseState {
   }
   
   public void placeOrder() {
-	  String cid = WarehouseContext.instance().getUser(); 
+      String cid = context.getUser(); 
       
       Client client = warehouse.searchClient(cid);
       
@@ -169,66 +176,62 @@ public class ClientState extends WarehouseState {
   
   public void checkProductPrice()
   {
-	  String id = getToken("Enter Product Id (Example. P1):");
-	  
-	  if (Warehouse.instance().searchProduct(id) != null)
-	  {
-		  System.out.println(Warehouse.instance().searchProduct(id)); 
-	  }
-	  else 
-		  System.out.println("Invalid product id."); 
+      String id = getToken("Enter Product Id (Example. P1):");
+      
+      if (Warehouse.instance().searchProduct(id) != null)
+      {
+          System.out.println(Warehouse.instance().searchProduct(id)); 
+      }
+      else 
+          System.out.println("Invalid product id."); 
   }
   
   public void setUID_tester(String uID)
   {
-	  WarehouseContext.instance().setUser(uID);  
+      context.setUser(uID);  
   }
 
   public void logout()
   {
 
-    if ((WarehouseContext.instance().getLogin() == WarehouseContext.IsClerk) || (WarehouseContext.instance().getLogin() == WarehouseContext.IsManager)) 
+    if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClerk || WarehouseContext.instance().getLogin() == WarehouseContext.IsManager)
     {  //stem.out.println(" going to login \n");
-    	(WarehouseContext.instance()).changeState(2); // exit with a code 2
+        (WarehouseContext.instance()).changeState(2); // exit with a code 2
     }
     else if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClient)
     {  //stem.out.println(" going to login \n");
-    	(WarehouseContext.instance()).changeState(0); // exit with a code 0
+        (WarehouseContext.instance()).changeState(0); // exit with a code 0
     }
     else 
-    	(WarehouseContext.instance()).changeState(1); // exit code 1, indicates error
+        (WarehouseContext.instance()).changeState(1); // exit code 1, indicates error
   }
  
   public void terminate()
   {
-    WarehouseContext.instance().changeState(exitCode);
+    context.changeState(exitCode);
   }
   
   public void process() {
     int command;
     help();
-    while (running) {
-      command = getCommand();
+    while ((command = getCommand()) != EXIT) {
       switch (command) {
-        case EXIT:              logout();
-                                break;
         case VIEW_ACCOUNT:      viewAccount();
                                 break;
         case PLACE_ORDER:       placeOrder();
                                 break;
         case CHECK_PRICE_OF_PRODUCTS: 
-        						checkProductPrice();
+                                checkProductPrice();
                                 break;
         case HELP:              help();
                                 break;
       }
     }
-    terminate();
+    logout();
   }
   
   public void run() {
-    running = true;
+    //running = true;
     process();
-    
   }
 }

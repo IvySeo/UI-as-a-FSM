@@ -56,8 +56,8 @@ public class WarehouseContext {
   
   private WarehouseContext() 
   { //constructor
-	System.out.println("In WarehouseContext constructor");
-	
+    System.out.println("In WarehouseContext constructor");
+    
     if (yesOrNo("Look for saved data and use it?")) 
     {
       retrieve();
@@ -97,7 +97,8 @@ public class WarehouseContext {
   {currentUser = code;}
   
   public void setUser(String uID) {
-   userID = uID; System.out.println(userID);
+   userID = uID; 
+   //System.out.println(userID);
   }
 
   public int getLogin()
@@ -115,12 +116,12 @@ public class WarehouseContext {
   }
 
   public void process(){
-	//System.out.println("PROCESSING: Running Current State = " + currentState);
+    //System.out.println("PROCESSING: Running Current State = " + currentState);
     states[currentState].run();
   }
   
   public static void main (String[] args){
-	  
+      
     WarehouseContext.instance().process(); 
   }
   

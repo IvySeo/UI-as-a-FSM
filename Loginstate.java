@@ -2,10 +2,10 @@ import java.util.*;
 import java.text.*;
 import java.io.*;
 public class Loginstate extends WarehouseState{
-  private static final int CLERK_LOGIN = 0;
+  private static final int EXIT = 0;
   private static final int USER_LOGIN = 1;
-  private static final int MANAGER_LOGIN = 2;
-  private static final int EXIT = 3;
+  private static final int CLERK_LOGIN = 2;
+  private static final int MANAGER_LOGIN = 3;
   private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));  
   private WarehouseContext context;
   private static Loginstate instance;
@@ -30,7 +30,7 @@ public class Loginstate extends WarehouseState{
     do {
       try {
         int value = Integer.parseInt(getToken("Enter command:" ));
-        if (value <= EXIT && value >= CLERK_LOGIN) {
+        if (value <= MANAGER_LOGIN && value >= EXIT) {
           return value;
         }
       } catch (NumberFormatException nfe) {
@@ -100,10 +100,10 @@ public class Loginstate extends WarehouseState{
     System.out.println();
     System.out.println("LoginState Menu");
     System.out.println("==============================");
-    System.out.println("input 0 to login as Clerk\n"+ 
-                       "input 1 to login as user\n" +
-                       "input 2 to login as manager\n"+
-                       "input 3 to exit the system\n"); 
+    System.out.println("input 0 to exit\n"+ 
+                       "input 1 to login as client\n" +
+                       "input 2 to login as clerk\n"+
+                       "input 3 to login as manager\n"); 
     while ((command = getCommand()) != EXIT) {
       switch (command) {
         case CLERK_LOGIN:       clerk();
@@ -115,10 +115,10 @@ public class Loginstate extends WarehouseState{
         default:                System.out.println("Invalid choice");
                                 
       }
-      System.out.println("input 0 to login as Clerk\n"+ 
-                         "input 1 to login as user\n" +
-                         "input 2 to login as manager\n"+
-                         "input 3 to exit the system\n");
+      System.out.println("input 0 to exit\n"+ 
+                         "input 1 to login as client\n" +
+                         "input 2 to login as clerk\n"+
+                         "input 3 to login as manager\n");
     }
     (WarehouseContext.instance()).changeState(0);
   }
