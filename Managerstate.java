@@ -45,6 +45,7 @@ public class Managerstate extends WarehouseState {
       }
     } while (true);
   }
+  
   private boolean yesOrNo(String prompt) {
     String more = getToken(prompt + " (Y|y)[es] or anything else for no");
     if (more.charAt(0) != 'y' && more.charAt(0) != 'Y') {
@@ -52,6 +53,7 @@ public class Managerstate extends WarehouseState {
     }
     return true;
   }
+  
   public int getNumber(String prompt) {
     do {
       try {
@@ -63,6 +65,23 @@ public class Managerstate extends WarehouseState {
       }
     } while (true);
   }
+  
+  public double getFloat(String prompt)
+  {
+      do {
+            try
+            {
+                String item = getToken(prompt);
+                Double decimal = Double.valueOf(item);
+                return decimal.doubleValue();
+            }
+            catch (NumberFormatException nfe)
+            {
+                System.out.println("Please input a number ");
+            }
+      } while (true);
+  }
+  
   public Calendar getDate(String prompt) {
     do {
       try {
@@ -133,45 +152,22 @@ public class Managerstate extends WarehouseState {
    }
 
 public void modifyPrice(){
-
-  String p = getToken("Enter product ID: ");
-  Product product - warehouse.searchProduct(p);
-  String price;
-  Double price_double;
-  Manufacturer m;
-  
-  price = getToken("Enter the new price: ");
-  price_double = Double.parseDouble(price);
-  m.setNewPrice(price_double);
-  System.out.println("Updated the new price.");
-  break;
-
-
-  /*
-    String p = getToken("Please enter product ID: ");
-    Product product = warehouse.searchProduct(p);
-    String m = getToken("Please enter manufacturer ID: ");
-    Manufacturer manufacturer = warehouse.searchManufacturer(m);
-    Manufacturer s;
-    String price;
-    Double pr;
-    if (product != null) {
-      Iterator<Manufacturer> suppTraversal = warehouse.getManufacturers(product);
-      while (suppTraversal.hasNext() != false) {
-        s=suppTraversal.next();
-        if(s.getManufacturers()==manufacturer){
-          price = getToken("Enter new price: ");
-          pr=Double.parseDouble(price);
-          s.setNewPrice(pr);
-          System.out.println("Price updated successfully");
-          break;
-        }
-        System.out.println("Not found");
-      }
-      
+  String pid = getToken("Enter product ID: ");
+  Product product = warehouse.searchProduct(pid);
+  if(product == null){
+      System.out.println("Product does not exists");
+      return;
   }
-     else
-      System.out.println("Not found"); */
+  
+  double price = getFloat("Enter the new price: ");
+  
+  if(warehouse.modifyPrice(pid, price) == false){
+      System.out.println("Could not update price");
+  }
+  else
+  {
+      System.out.println("Updated the new price.");
+  }
 }
 
 public void addManufacturer()
