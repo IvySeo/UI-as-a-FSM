@@ -18,6 +18,10 @@ public class Managerstate extends WarehouseState {
   private static final int LOAD_DATA = 4;
   private static final int CLERKMENU = 5;
   private static final int HELP = 6;
+  
+  private boolean running;
+  private int exitCode;
+  
   private Managerstate() {
       super();
       warehouse = Warehouse.instance();
@@ -130,7 +134,8 @@ public class Managerstate extends WarehouseState {
   }
 
   public void clerkmenu() {
-    (WarehouseContext.instance()).changeState(0);
+    exitCode = 1;
+    running = false;
   }
 
    public void assignProduct()
@@ -189,10 +194,14 @@ public void addManufacturer()
   
 
   public void logout() {
-    (WarehouseContext.instance()).changeState(2); // logout to manager state
+      running = false;
+      exitCode = 0;
   }
 
 
+  public void terminate(){
+        (WarehouseContext.instance()).changeState(exitCode);
+  }
 
   public void process() {
     int command;
@@ -211,7 +220,7 @@ public void addManufacturer()
                                             break;
       }
     }
-    logout();
+    terminate();
   }
 
 
