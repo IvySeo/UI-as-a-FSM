@@ -103,7 +103,7 @@ public class ClientState extends WarehouseState {
 
   public void viewAccount() {
       
-    String cid = context.getUser(); 
+    String cid = (WarehouseContext.instance()).getUser(); 
     
     Client client = warehouse.searchClient(cid);
     
@@ -154,7 +154,7 @@ public class ClientState extends WarehouseState {
   }
   
   public void placeOrder() {
-      String cid = context.getUser(); 
+      String cid = (WarehouseContext.instance()).getUser();
       
       Client client = warehouse.searchClient(cid);
       
